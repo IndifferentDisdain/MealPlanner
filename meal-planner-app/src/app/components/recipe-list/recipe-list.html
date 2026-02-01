@@ -1,0 +1,29 @@
+<div class="recipe-list-container">
+  <header class="header">
+    <h1>Recipe Meal Planner</h1>
+  </header>
+
+  <div class="recipe-list">
+    @if (recipes.length === 0) {
+      <div class="empty-state">
+        <p class="empty-message">No recipes yet. Create your first one!</p>
+      </div>
+    } @else {
+      @for (recipe of recipes; track recipe.id) {
+        <div class="recipe-card" (click)="openRecipe(recipe.id)">
+          <h3 class="recipe-name">{{ recipe.name }}</h3>
+          <div class="recipe-meta">
+            <span class="servings">{{ recipe.servings }} servings</span>
+            @if (getTotalTime(recipe) > 0) {
+              <span class="time">{{ getTotalTime(recipe) }} min total</span>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <button class="fab" (click)="createRecipe()" aria-label="Add Recipe">
+    <span class="fab-icon">+</span>
+  </button>
+</div>
