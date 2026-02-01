@@ -1,9 +1,78 @@
 <div class="meal-plan-container">
-  <header class="header">
+  <div class="header">
     <h1>This Week's Dinners</h1>
-  </header>
+    <button class="reset-btn" (click)="resetDemo()">Reset Demo</button>
+  </div>
 
-  <div class="content">
-    <p class="coming-soon">Coming soon...</p>
+  <div class="days-container">
+    <div *ngFor="let day of days" class="day-card" [class.filled]="day.dinner">
+      <div class="day-name">{{ day.name.toUpperCase() }}</div>
+
+      <div *ngIf="!day.dinner" class="empty-state">
+        <button class="add-dinner-btn" (click)="openRecipePicker(day.index)">
+          + Add Dinner
+        </button>
+      </div>
+
+      <div *ngIf="day.dinner" class="filled-state">
+        <div class="recipe-name">{{ day.dinner.recipe.name }}</div>
+        <div class="servings-info">{{ day.dinner.servings }} servings</div>
+        <div class="actions">
+          <button class="change-btn" (click)="openRecipePicker(day.index)">Change</button>
+          <button class="remove-btn" (click)="removeDinner(day.index)">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipe Picker Modal -->
+  <div *ngIf="showRecipePicker" class="modal-overlay" (click)="closeRecipePicker()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Dinner for {{ selectedDayIndex !== null ? dayNames[selectedDayIndex] : '' }}</h2>
+        <button class="close-btn" (click)="closeRecipePicker()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Servings Stepper -->
+        <div class="servings-stepper">
+          <label>Servings</label>
+          <div class="stepper-controls">
+            <button
+              class="stepper-btn"
+              (click)="decrementServings()"
+              [disabled]="pickerServings <= 1">
+              -
+            </button>
+            <span class="servings-value">{{ pickerServings }}</span>
+            <button
+              class="stepper-btn"
+              (click)="incrementServings()"
+              [disabled]="pickerServings >= 12">
+              +
+            </button>
+          </div>
+        </div>
+
+        <!-- Recipe List -->
+        <div class="recipe-list-label">Choose Recipe</div>
+        <div class="recipe-list">
+          <div *ngIf="allRecipes.length === 0" class="empty-recipes">
+            <p>No recipes yet. Create one first!</p>
+          </div>
+
+          <div
+            *ngFor="let recipe of allRecipes"
+            class="recipe-card"
+            (click)="selectRecipe(recipe)">
+            <div class="recipe-card-title">{{ recipe.name }}</div>
+            <div class="recipe-card-meta">
+              {{ recipe.servings }} servings
+              <span *ngIf="getTotalTime(recipe) > 0"> • {{ getTotalTime(recipe) }} min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

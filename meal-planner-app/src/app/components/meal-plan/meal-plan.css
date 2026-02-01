@@ -1,6 +1,7 @@
 .meal-plan-container {
   min-height: 100vh;
   background-color: #FAFAFA;
+  padding-bottom: 80px;
 }
 
 .header {
@@ -8,6 +9,9 @@
   color: #FFFFFF;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .header h1 {
@@ -17,12 +21,317 @@
   letter-spacing: -0.5px;
 }
 
-.content {
-  padding: 24px 16px;
+.reset-btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reset-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.days-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Day Cards */
+.day-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  min-height: 80px;
+}
+
+.day-card.filled {
+  min-height: 100px;
+}
+
+.day-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #757575;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  justify-content: center;
+}
+
+.add-dinner-btn {
+  background-color: #FF6B35;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+  max-width: 200px;
+}
+
+.add-dinner-btn:hover {
+  background-color: #CC5529;
+}
+
+/* Filled State */
+.filled-state {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recipe-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #212121;
+}
+
+.servings-info {
+  font-size: 14px;
+  color: #757575;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.change-btn,
+.remove-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.change-btn {
+  background-color: #FFA07A;
+  color: white;
+  border: none;
+}
+
+.change-btn:hover {
+  background-color: #FF6B35;
+}
+
+.remove-btn {
+  background-color: white;
+  color: #F44336;
+  border: 1px solid #F44336;
+}
+
+.remove-btn:hover {
+  background-color: #FEE;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: white;
+  width: 100%;
+  max-height: 70vh;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-header {
+  padding: 16px;
+  border-bottom: 1px solid #E0E0E0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #212121;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #757575;
+  cursor: pointer;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  color: #212121;
+}
+
+.modal-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Servings Stepper */
+.servings-stepper {
+  margin-bottom: 24px;
+}
+
+.servings-stepper label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 8px;
+}
+
+.stepper-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.stepper-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  border: 1px solid #E0E0E0;
+  background-color: white;
+  font-size: 24px;
+  font-weight: 500;
+  color: #FF6B35;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background-color: #FFA07A;
+  color: white;
+  border-color: #FFA07A;
+}
+
+.stepper-btn:disabled {
+  color: #E0E0E0;
+  cursor: not-allowed;
+}
+
+.servings-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #212121;
+  min-width: 60px;
   text-align: center;
 }
 
-.coming-soon {
+/* Recipe List */
+.recipe-list-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 12px;
+}
+
+.recipe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty-recipes {
+  text-align: center;
+  padding: 32px 16px;
   color: #757575;
-  font-size: 16px;
+}
+
+.recipe-card {
+  background-color: white;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.recipe-card:hover {
+  background-color: #FFF5F0;
+  border-color: #FF6B35;
+  transform: scale(0.98);
+}
+
+.recipe-card:active {
+  transform: scale(0.96);
+}
+
+.recipe-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 4px;
+}
+
+.recipe-card-meta {
+  font-size: 14px;
+  color: #757575;
+}
+
+/* Responsive */
+@media (min-width: 600px) {
+  .modal-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .days-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
 }
