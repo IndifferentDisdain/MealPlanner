@@ -35,9 +35,9 @@ When a user saves a recipe, the system captures the recipe name, ingredients wit
 **Actions**:
 - `create_recipe(name, ingredients, instructions, servings)` → recipe
 - `edit_recipe(recipe_id, fields)` → recipe
-- `delete_recipe(recipe_id)` → void
 - `get_recipe(recipe_id)` → recipe
 - `list_all_recipes()` → recipe[]
+- **MVP: No delete operation** (prevents complexity with meal plan references)
 
 **Dependencies**: None (foundational concept)
 
@@ -52,16 +52,18 @@ Users assign recipes to specific days and meal times (breakfast, lunch, dinner) 
 
 **State**:
 - `plan_id` - Unique identifier
-- `week_start_date` - Start date of the week (date)
-- `meals` - Map of {day, meal_time} → recipe_id
-  - Days: Monday through Sunday (or 0-6)
-  - Meal times: breakfast, lunch, dinner
-- `notes` - Optional text per day/meal (optional)
+- `week_start_date` - Start date of the week (Monday)
+- `dinners` - Map of {day} → {recipe_id, servings}
+  - Days: Monday through Sunday (0-6)
+  - **MVP: Dinner only** (no breakfast/lunch)
+  - Servings: Scaled quantity for recipe
+- `notes` - Optional text per day (optional, may be Phase 2)
 
 **Actions**:
 - `create_plan(week_start_date)` → plan
-- `assign_meal(plan_id, day, meal_time, recipe_id)` → void
-- `remove_meal(plan_id, day, meal_time)` → void
+- `assign_dinner(plan_id, day, recipe_id, servings)` → void
+- `remove_dinner(plan_id, day)` → void
+- `update_servings(plan_id, day, servings)` → void
 - `get_plan(plan_id)` → plan
 - `get_current_week_plan()` → plan
 
@@ -119,12 +121,14 @@ graph TD
 ## MVP Scope
 
 ### In Scope
-- ✅ Recipe CRUD operations
-- ✅ Weekly meal planning (7-day grid)
-- ✅ Shopping list generation with ingredient aggregation
-- ✅ Check/uncheck items on shopping list
-- ✅ Mobile-friendly responsive design
-- ✅ Demo seed data for initial recipes
+- ✅ Recipe create/edit operations (no delete)
+- ✅ Weekly **dinner** planning (7-day vertical cards, Monday start)
+- ✅ Recipe scaling (adjust servings when adding to meal plan)
+- ✅ Auto-updating shopping list with ingredient aggregation
+- ✅ Check/uncheck items on shopping list (grouped by category)
+- ✅ Mobile-friendly responsive design (vertical day cards)
+- ✅ 3 demo seed recipes
+- ✅ Reset to demo data button
 
 ### Explicitly Out of Scope
 - ❌ User authentication/login
@@ -132,9 +136,13 @@ graph TD
 - ❌ Recipe sharing between users
 - ❌ Nutritional information
 - ❌ Grocery delivery integration
-- ❌ Recipe search/filtering (unless needed for usability)
+- ❌ Recipe search/filtering
 - ❌ Recipe images/photos
 - ❌ Data backup/export
+- ❌ Breakfast and lunch planning
+- ❌ Recipe deletion
+- ❌ Manual shopping list editing
+- ❌ Multiple recipes per meal slot
 
 ---
 
@@ -142,30 +150,37 @@ graph TD
 
 **Data Storage**:
 - All data stored in browser localStorage
-- Data is ephemeral (lost on cache clear)
-- Seed data should include 5-10 sample recipes on first load
+- Data is ephemeral (lost on cache clear, no warning needed)
+- **Seed data**: 3 sample recipes on first load
+- **Reset button**: Restore original demo data for investor presentations
 
 **Ingredient Aggregation Logic**:
-- Combine ingredients with same name
-- Sum quantities when units match (e.g., 2 cups + 1 cup = 3 cups)
+- **Loose/fuzzy matching**: "milk" = "whole milk" = "2% milk"
+- **Free-text units**: Users can type any unit (cups, tbsp, grams, etc.)
+- **Fraction support**: Handle "1/2 cup + 1/4 cup = 3/4 cup"
+- Sum quantities when units match (scaled by servings)
 - Keep separate when units differ (e.g., "2 cups flour" and "1 tbsp flour")
+- **"To taste" ingredients**: Show name only (e.g., "salt" instead of quantity)
 - Case-insensitive matching for ingredient names
+- **Group by category**: Produce, Dairy, Meat, Pantry, etc.
 
 **Responsive Design**:
 - Mobile-first approach
-- Meal plan grid should adapt to mobile (possibly vertical cards vs 7-column grid)
-- Touch-friendly controls for adding/removing meals
+- **Vertical day cards** (not horizontal grid) for better mobile UX
+- **Modal picker** for recipe selection (click day → modal opens → select recipe)
+- Touch-friendly controls for adding/removing dinners
+- Recipe list: scrollable (no search/filter in MVP)
 
 ---
 
-## Open Questions
+## ✅ All Requirements Finalized
 
-1. **Recipe Input**: Should users manually enter recipes or is there a simple import format (e.g., paste from web)?
-2. **Meal Planning UX**: Drag-and-drop recipes onto calendar, or select from dropdown?
-3. **Shopping List Organization**: Group by category (produce, dairy, etc.) or flat list?
-4. **Multiple Weeks**: Should users be able to plan beyond current week, or just one week at a time?
+See [business-decisions.md](business-decisions.md) for complete decision log.
 
-*These should be addressed in design brief phase.*
+**Final Decisions**:
+- Ingredient categories: Auto-detect using keyword matching
+- Demo data: 3 recipes + pre-populated week
+- Servings UI: Stepper buttons ([-] 4 servings [+])
 
 ---
 

@@ -40,12 +40,14 @@ A web-based, mobile-friendly application with three core workflows:
 ## MVP Scope
 
 ### What's Included
-- Create, edit, and delete recipes
-- Plan meals on a 7-day calendar (breakfast, lunch, dinner)
-- Auto-generate shopping lists from meal plans
+- Create and edit recipes (no deletion in MVP)
+- Plan **dinners** on a 7-day calendar (Monday-Sunday)
+- Scale recipe servings when adding to meal plan
+- Auto-updating shopping lists from meal plans (grouped by category)
 - Check off items while shopping
-- Mobile-responsive design
-- Pre-seeded demo recipes for immediate demonstration
+- Mobile-responsive design (vertical day cards)
+- 3 pre-seeded demo recipes for immediate demonstration
+- Reset to demo data button
 
 ### What's NOT Included (Phase 2+)
 - User accounts or authentication
@@ -56,6 +58,10 @@ A web-based, mobile-friendly application with three core workflows:
 - Grocery delivery integration
 - Multi-week planning
 - Data backup or export
+- Breakfast and lunch planning (dinner only for MVP)
+- Recipe deletion
+- Manual shopping list editing
+- Recipe search/filtering
 
 ---
 
@@ -87,24 +93,28 @@ The application is built around three fundamental concepts:
 
 ### Flow 1: Create and Save a Recipe
 1. User clicks "Add Recipe"
-2. Enters recipe name, ingredients (name/quantity/unit), and instructions
+2. Enters recipe name, ingredients (free-text quantity/unit), and instructions
+   - Minimum: 1 ingredient, 1 instruction step
+   - No character limits
 3. Optionally adds servings, prep time, cook time
 4. Saves recipe to localStorage
-5. Recipe appears in recipe list
+5. Recipe appears in recipe list (cannot be deleted in MVP)
 
-### Flow 2: Plan a Week of Meals
-1. User views weekly meal planning grid (7 days × 3 meals)
-2. Clicks on a meal slot (e.g., "Monday Dinner")
-3. Selects a recipe from saved recipes
-4. Recipe is assigned to that meal slot
-5. Repeat for other meals throughout the week
+### Flow 2: Plan a Week of Dinners
+1. User views weekly dinner planning (7 vertical day cards, Monday-Sunday)
+2. Clicks "Add Dinner" on a day
+3. Modal opens with scrollable list of saved recipes
+4. Selects a recipe and optionally adjusts servings (recipe scaling)
+5. Recipe is assigned to that day
+6. Repeat for other days (unplanned days are acceptable)
 
-### Flow 3: Generate and Use Shopping List
-1. User clicks "Generate Shopping List" from meal plan view
+### Flow 3: Auto-Generated Shopping List
+1. Shopping list automatically updates when meal plan changes (no manual generation)
 2. System aggregates all ingredients from planned recipes
-3. Combines duplicate ingredients (summing quantities)
-4. Displays organized shopping list
+3. Combines duplicate ingredients with loose matching (summing quantities, handling fractions)
+4. Groups ingredients by category (Produce, Dairy, Meat, Pantry, etc.)
 5. User checks off items while shopping
+6. List resets each week (checked items don't carry forward)
 
 ---
 
@@ -139,10 +149,11 @@ The application is built around three fundamental concepts:
 **Interactions**: Touch-friendly (44px+ tap targets)
 
 **Key Screens**:
-1. Recipe list view (card grid or list)
-2. Recipe detail/edit form
-3. Weekly meal planning grid/calendar
-4. Shopping list view with checkboxes
+1. Recipe list view (scrollable list)
+2. Recipe creation/edit form (with servings, ingredients, instructions)
+3. Weekly dinner planning (7 vertical day cards, Monday-Sunday)
+4. Recipe picker modal (triggered when adding dinner to a day)
+5. Shopping list view with checkboxes (grouped by category)
 
 *See [docs/design-brief.md](docs/design-brief.md) for detailed design specifications (to be created).*
 
@@ -171,14 +182,14 @@ The application is built around three fundamental concepts:
 
 ---
 
-## Open Questions
+## ✅ Requirements Complete
 
-*To be addressed in design phase:*
+All business requirements finalized. See [docs/business-decisions.md](docs/business-decisions.md) for complete decision log.
 
-1. Recipe input: Manual form only, or support paste/import?
-2. Meal planning interaction: Drag-and-drop or dropdown selection?
-3. Shopping list organization: Flat list or grouped by category?
-4. Recipe discovery: How do users find recipes to add to plan?
+**Key Decisions**:
+- Auto-detect ingredient categories using keyword matching
+- Pre-populate with 3 recipes + planned demo week
+- Stepper buttons (plus/minus) for adjusting servings
 
 ---
 
@@ -187,7 +198,9 @@ The application is built around three fundamental concepts:
 /
 ├── README.md                 # This file
 ├── docs/
+│   ├── Summary.txt          # Original client meeting notes
 │   ├── concepts.md          # Detailed concept analysis
+│   ├── business-decisions.md # Business requirements decisions ✅
 │   ├── design-brief.md      # Design requirements (TBD)
 │   └── user-flows.md        # Detailed user journey maps (TBD)
 ├── designs/
@@ -208,6 +221,7 @@ The application is built around three fundamental concepts:
 ## Quick Links
 
 - [Detailed Concepts](docs/concepts.md) - Core concept analysis
+- [Business Decisions](docs/business-decisions.md) - Answered requirements ✅
 - Design Brief (coming soon)
 - Issue Tracker (coming soon)
 - Demo Link (coming soon)
