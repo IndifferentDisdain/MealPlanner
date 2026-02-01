@@ -1,0 +1,28 @@
+.shopping-list-container {
+  min-height: 100vh;
+  background-color: #FAFAFA;
+}
+
+.header {
+  background-color: #FF6B35;
+  color: #FFFFFF;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.content {
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.coming-soon {
+  color: #757575;
+  font-size: 16px;
+}
