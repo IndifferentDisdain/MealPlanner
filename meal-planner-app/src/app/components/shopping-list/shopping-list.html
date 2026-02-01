@@ -3,7 +3,45 @@
     <h1>Shopping List</h1>
   </header>
 
-  <div class="content">
-    <p class="coming-soon">Coming soon...</p>
+  <!-- Empty State -->
+  <div *ngIf="isEmpty" class="empty-state">
+    <div class="empty-icon">🛒</div>
+    <h2>No dinners planned yet</h2>
+    <p>Plan some meals to generate your shopping list</p>
+    <button class="cta-btn" (click)="goToMealPlan()">Plan Your Week</button>
+  </div>
+
+  <!-- Shopping List -->
+  <div *ngIf="!isEmpty" class="list-content">
+    <div *ngFor="let category of categories" class="category-section">
+      <div class="category-header" (click)="toggleCategory(category)">
+        <span class="category-name">
+          <span class="chevron" [class.collapsed]="!category.expanded">▼</span>
+          {{ category.name }}
+        </span>
+        <span class="category-count">{{ category.checkedCount }}/{{ category.totalCount }}</span>
+      </div>
+
+      <div *ngIf="category.expanded" class="category-items">
+        <div
+          *ngFor="let item of category.items"
+          class="list-item"
+          [class.checked]="item.checked">
+          <label class="item-label">
+            <input
+              type="checkbox"
+              class="item-checkbox"
+              [checked]="item.checked"
+              (change)="toggleItem(item.index)">
+            <span class="item-text">
+              <span class="item-quantity" *ngIf="formatQuantity(item)">
+                {{ formatQuantity(item) }}
+              </span>
+              <span class="item-name">{{ item.name }}</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

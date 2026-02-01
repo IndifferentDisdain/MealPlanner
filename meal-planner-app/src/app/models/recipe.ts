@@ -13,3 +13,26 @@ export interface Recipe {
   prepTime?: number; // minutes
   cookTime?: number; // minutes
 }
+
+export interface MealPlanEntry {
+  recipeId: string;
+  servings: number;
+}
+
+export interface MealPlan {
+  weekStart: string; // ISO date string (Monday)
+  dinners: { [dayIndex: string]: MealPlanEntry }; // 0-6 (Mon-Sun)
+}
+
+export interface ShoppingListItem {
+  category: string;
+  name: string;
+  quantity: number | string; // number or "to taste"
+  unit: string;
+  checked: boolean;
+}
+
+export interface ShoppingList {
+  items: ShoppingListItem[];
+  generatedDate: string;
+}
