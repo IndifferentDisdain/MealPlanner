@@ -67,13 +67,43 @@ A web-based, mobile-friendly application with three core workflows:
 
 ## Technical Architecture
 
-**Platform**: Web application (mobile-friendly responsive design)  
-**Data Storage**: Browser localStorage (ephemeral)  
-**State Management**: Client-side only, no backend required  
-**Deployment**: Static hosting (e.g., GitHub Pages, Netlify, Vercel)
+### MVP Implementation (Current)
+**Platform**: Angular 20 single-page application
+**Data Storage**: Browser localStorage (ephemeral, no backend)
+**State Management**: Angular Services + RxJS
+**Deployment**: Azure App Service (static hosting)
 
-**Technology Stack**: TBD based on development team preferences  
-*Recommended*: React or Angular for component-based UI, Tailwind for responsive styling
+### Production Architecture (Reference Design)
+
+**Full-stack architecture for future implementation:**
+
+#### Frontend
+- **Framework**: Angular 20 (TypeScript)
+- **Hosting**: Azure App Service (Windows)
+- **Build**: Angular CLI / esbuild
+
+#### Backend
+- **Framework**: ASP.NET Core 8.0 Web API
+- **Architecture**: Clean Architecture (API → UseCases → Core → Infrastructure)
+- **Pattern**: CQRS with MediatR
+- **Hosting**: Azure App Service (F1/Free tier initially)
+
+#### Database
+- **Provider**: Azure SQL Database (Standard tier)
+- **ORM**: Entity Framework Core 8
+- **Schema**: SQL Database Project (.sqlproj, not migrations)
+
+#### Azure Services
+- **Key Vault**: Secrets and connection strings
+- **Application Insights**: Monitoring and logging
+- **No CDN** or deployment slots (Phase 1)
+
+#### DevOps
+- **Source Control**: GitHub
+- **CI/CD**: GitHub Actions
+- **Project Management**: Azure DevOps (Boards)
+
+**See [docs/reference-architecture.md](docs/reference-architecture.md) for complete architecture details, database schema, API design, and deployment strategy.**
 
 ---
 
